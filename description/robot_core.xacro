@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Materials -->
+
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <material name="orange">
+        <color rgba="1 0.3569 0 1"/>
+    </material>  
+
+    <!-- Joints -->
+
+    <joint name="world_to_fixture" type="fixed">
+        <parent link="world"/>
+        <child link="fixture"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+
+    <joint name="fixture_to_hip" type="continuous">
+        <parent link="fixture"/>
+        <child link="hip"/>
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0.10"/>
+        <dynamics damping="10.0" friction="10.0"/>   
+    </joint>
+
+    <joint name="hip_to_upper_leg" type="continuous">
+        <parent link="hip"/>
+        <child link="upper_leg"/>
+        <axis xyz="0 0 1"/>
+        <origin rpy="1.5708 0 0" xyz="0 0 0.028"/>
+        <dynamics damping="2.0" friction="2.0"/>
+    </joint>
+
+    <joint name="upper_leg_to_lower_leg" type="continuous">
+        <parent link="upper_leg"/>
+        <child link="lower_leg"/>
+        <axis xyz="0 0 1"/>
+        <origin rpy="3.14159 0 0" xyz="-0.08004 0 0.040"/>
+        <dynamics damping="2.0" friction="2.0"/>
+    </joint>
+
+    <joint name="lower_leg_to_end_effector" type="fixed">
+        <parent link="lower_leg"/>
+        <child link="end_effector"/>
+        <origin rpy="0 0 0" xyz="-0.11003 0 0.006"/>
+    </joint>
+
+    <!-- Links -->
+
+    <link name="world">
+    </link>
+
+    <link name="fixture">
+        <visual>
+        <geometry>
+            <cylinder length="0.10" radius="0.025"/>     
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.05"/>
+        </visual>
+        <collision>
+        <geometry>
+            <cylinder length="0.10" radius="0.025"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.05"/>
+        </collision>
+        <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.001979" ixy="0" ixz="0" iyy="0.001979" iyz="0" izz="0.0001041"/>	
+        </inertial>	    
+    </link>
+
+    <link name="hip">
+        <visual>
+        <geometry>
+            <mesh filename="file:///home/ubuntu/ros2_ws/src/my_bot/description/stl/hip_rotated.stl"
+            scale="0.001 0.001 0.001"/>
+    </geometry>
+        <origin rpy="0 0 4.71239" xyz="0 0 0"/>
+        <material name="white"/>
+        </visual>
+        <collision>
+        <geometry>
+            <mesh filename="file:///home/ubuntu/ros2_ws/src/my_bot/description/stl/hip_rotated.stl"
+            scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 4.71239" xyz="0 0 0"/>
+        </collision>
+        <inertial>
+        <mass value="0.107"/>
+        <inertia ixx="0.006094" ixy="0" ixz="0" iyy="0.006094" iyz="0" izz="0.0001563"/>
+        </inertial>	    
+    </link>
+
+    <link name ="upper_leg">
+        <visual>
+        <geometry>
+            <mesh filename="file:///home/ubuntu/ros2_ws/src/my_bot/description/stl/upper_leg.stl"
+            scale="0.001 0.001 0.001"/> 
+        </geometry>
+        <origin rpy="3.14159 -1.57080 0" xyz="0 0 0.04"/>
+        <material name="white"/>
+        </visual>
+        <collision>
+        <geometry>
+            <mesh filename="file:///home/ubuntu/ros2_ws/src/my_bot/description/stl/upper_leg.stl"
+            scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="3.14159 -1.57080 0" xyz="0 0 0.04"/>
+        </collision>
+        <inertial>
+        <mass value="0.117"/>
+        <inertia ixx="0.006094" ixy="0" ixz="0" iyy="0.006094" iyz="0" izz="0.0001563"/>
+        </inertial>	    
+    </link>
+
+    <link name ="lower_leg">
+        <visual>
+        <geometry>
+            <mesh filename="file:///home/ubuntu/ros2_ws/src/my_bot/description/stl/lower_leg.stl"
+            scale="0.001 0.001 0.001"/>        
+        </geometry>
+        <origin rpy="-3.14159 -1.57080 0" xyz="0 0 0.0035"/>
+        <material name="white"/>
+        </visual>
+        <collision>
+        <geometry>
+            <mesh filename="file:///home/ubuntu/ros2_ws/src/my_bot/description/stl/lower_leg.stl"
+            scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="-3.14159 -1.57080 0" xyz="0 0 0.0035"/>
+        </collision>	      
+        <inertial>
+        <mass value="0.013"/>
+        <inertia ixx="0.006094" ixy="0" ixz="0" iyy="0.006094" iyz="0" izz="0.0001563"/>	    
+        </inertial>	    
+    </link>
+
+    <link name ="end_effector">
+        <visual>
+        <geometry>
+            <sphere radius="0.002"/>
+        </geometry>
+        <origin rpy="0 0 0 " xyz="0 0 0"/>
+        <material name="orange"/>
+        </visual>
+        <collision>
+        <geometry>
+            <sphere radius="0.002"/>
+        </geometry>
+        <origin rpy="0 0 0 " xyz="0 0 0"/>
+        </collision>
+        <inertial>
+        <mass value="3.0"/>
+        <inertia ixx="0.006094" ixy="0" ixz="0" iyy="0.006094" iyz="0" izz="0.0001563"/>
+        </inertial>
+    </link>
+
+</robot>

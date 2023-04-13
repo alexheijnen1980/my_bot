@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- This file demonstrates the use of some <gazebo> tags -->
+    <!-- To include it add the following line -->
+    <!-- <xacro:include filename="example_gazebo.xacro" /> -->
+
+    <!-- Gazebo is unable to use the same <material> tags that are already in the URDF (that RViz uses). -->
+    <!-- Instead, we need to add gazebo tags for our links that refer to Gazebo materials -->
+    <gazebo reference="fixture">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    
+    <gazebo reference="hip">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="upper_leg">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="lower_leg">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="end_effector">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <!-- Gazebo requires the use of plugins to interact with other systems such as ROS. -->
+    <!-- This plugin will publish the joint_states for the selected joints 
+            (which robot_state_publisher can then use to broadcast the approprate tf). -->
+    <gazebo>
+        <plugin name="gazebo_ros_joint_state_publisher"
+            filename="libgazebo_ros_joint_state_publisher.so">
+            <update_rate>20</update_rate>
+            <joint_name>fixture_to_hip</joint_name>
+            <joint_name>hip_to_upper_leg</joint_name>
+            <joint_name>upper_leg_to_lower_leg</joint_name>
+        </plugin>
+    </gazebo>
+
+    <!-- This plugin will read a JointTrajectory message from the /set_joint_trajectory topic 
+         and move the machine accordingly. It's a bit clunky but it works. -->
+    <!-- You'll probably want to add damping to the joints to stop them from flopping around. 
+         e.g. <dynamics damping="10.0" friction="10.0"/> -->
+    <!-- Here's an example message to publish to test it:
+         ros2 topic pub -1 /set_joint_trajectory trajectory_msgs/msg/JointTrajectory  '{header: {frame_id: world}, joint_names: [fixture_to_hip, hip_to_upper_leg, upper_leg_to_lower_leg], points: [{positions: {0.0,0.0,0.0}}]}' -->
+    <gazebo>
+        <plugin name="gazebo_ros_joint_pose_trajectory"
+            filename="libgazebo_ros_joint_pose_trajectory.so">
+            <update_rate>20</update_rate>
+        </plugin>
+    </gazebo>
+
+</robot>

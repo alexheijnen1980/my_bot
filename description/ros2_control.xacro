@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <gazebo reference="fixture">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    
+    <gazebo reference="hip">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="upper_leg">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="lower_leg">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="end_effector">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+        <joint name="fixture_to_hip">
+            <command_interface name="position">
+                <!-- <param name="min">-1.57</param>
+                <param name="max">1.57</param> -->
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="hip_to_upper_leg">
+            <command_interface name="position">
+                <!-- <param name="min">-1.57</param>
+                <param name="max">0</param> -->
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="upper_leg_to_lower_leg">
+            <command_interface name="position">
+                <!-- <param name="min">-1.57</param>
+                <param name="max">1.57</param> -->
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+
+    <gazebo>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+            <parameters>$(find my_bot)/config/my_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+</robot>
